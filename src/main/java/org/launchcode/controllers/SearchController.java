@@ -27,23 +27,24 @@ public class SearchController {
 
 
     @RequestMapping(value = "results", method = RequestMethod.GET)
-    public String listJobsBySearchResults(Model model, @RequestParam String searchTerm, @RequestParam String searchType) {
+    public String search(Model model, @RequestParam String searchTerm, @RequestParam String searchType) {
         if (searchTerm.equals("")) {
             return "search";
         }
+        ArrayList<HashMap<String, String>> jobs = new ArrayList<>();
 
         if (searchType.equals("all")) {
 
-                ArrayList<HashMap<String, String>> jobs = JobData.findByValue(searchTerm);
-                model.addAttribute("jobs", jobs);
-
-            return "search";
+            jobs = JobData.findByValue(searchTerm);
+//                model.addAttribute("jobs", jobs);
+//
+//            return "search";
         }
         else {
 
-            ArrayList<HashMap<String, String>> jobs = JobData.findByColumnAndValue(searchType, searchTerm);
-            model.addAttribute("jobs", jobs);
-            return "search";
-        }
+            jobs = JobData.findByColumnAndValue(searchType, searchTerm);
 
+        }
+        model.addAttribute("jobs", jobs);
+        return "search";
 }}
